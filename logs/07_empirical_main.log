@@ -1,0 +1,155 @@
+=== Composite index validation ===
+Inter-item correlations (pairwise complete):
+           z_doctor z_minister z_chairman
+z_doctor      1.000      0.399      0.427
+z_minister    0.399      1.000      0.404
+z_chairman    0.427      0.404      1.000
+Cronbach's alpha (complete cases, n= 33516 ): 0.673 
+
+=== H1 (PRIMARY, with own income): N = 29627 ===
+Country-clustered (CR1):
+                Estimate  Std. Error  t value    Pr(>|t|)
+exposure_avg 0.009953037 0.004961738 2.005958 0.044869813
+income_pct   0.094165173 0.031622411 2.977799 0.002905618
+CR2 small-sample corrected:
+Alternative hypothesis: two-sided 
+        Coef. Estimate      SE Null value t-stat d.f. (Satt) p-val (Satt) Sig.
+ exposure_avg  0.00995 0.00513          0   1.94        18.0      0.06802    .
+   income_pct  0.09417 0.03169          0   2.97        17.5      0.00836   **
+
+--- Robustness: income as tertile/quintile factor instead of continuous percentile ---
+Tertile spec, exposure coef:
+   Estimate  Std. Error     t value    Pr(>|t|) 
+0.010209085 0.004953891 2.060821575 0.039328784 
+Quintile spec, exposure coef:
+  Estimate Std. Error    t value   Pr(>|t|) 
+0.01019193 0.00491360 2.07422924 0.03806665 
+
+--- Robustness: complete cases only (all 3 anchors answered) ---
+N = 25277 
+   Estimate  Std. Error     t value    Pr(>|t|) 
+0.008146533 0.004681372 1.740201978 0.081835745 
+
+=== H1 robustness: individual anchors (with income control, clustered SEs) ===
+ratio_doctor (N= 28131 ):
+   Estimate  Std. Error     t value    Pr(>|t|) 
+0.003040162 0.002870776 1.059003643 0.289607225 
+ratio_minister (N= 28060 ):
+   Estimate  Std. Error     t value    Pr(>|t|) 
+0.003969055 0.004839875 0.820073955 0.412180923 
+ratio_chairman (N= 27479 ):
+   Estimate  Std. Error     t value    Pr(>|t|) 
+0.015121325 0.005820193 2.598079543 0.009379686 
+
+
+=== H3 path decomposition (with own income) ===
+--- Outcome: income_too_large (N= 29340 ) ---
+                   Estimate  Std. Error   t value     Pr(>|t|)
+composite_index  0.07470130 0.010413272  7.173663 7.474886e-13
+exposure_avg     0.03129722 0.006900766  4.535326 5.774248e-06
+income_pct      -0.32927211 0.059234938 -5.558748 2.740796e-08
+CR2 small-sample corrected:
+Alternative hypothesis: two-sided 
+           Coef. Estimate      SE Null value t-stat d.f. (Satt) p-val (Satt)
+ composite_index   0.0747 0.01045          0   7.15        17.4       <0.001
+    exposure_avg   0.0313 0.00705          0   4.44        17.9       <0.001
+      income_pct  -0.3293 0.05965          0  -5.52        17.5       <0.001
+ Sig.
+  ***
+  ***
+  ***
+Indirect (beta*lambda): 0.00074  | tau: 0.0313  | indirect share of (tau+indirect): 2.3 %
+
+Cluster-bootstrap 95% CI for indirect effect ( 5000 reps, 5000 valid): 3e-05 to 0.00163 
+
+--- Outcome: gov_should_reduce (N= 29252 ) ---
+                   Estimate  Std. Error   t value     Pr(>|t|)
+composite_index  0.06145657 0.013218435  4.649308 3.345060e-06
+exposure_avg     0.02144822 0.005878737  3.648441 2.642958e-04
+income_pct      -0.45780215 0.079913761 -5.728702 1.021947e-08
+CR2 small-sample corrected:
+Alternative hypothesis: two-sided 
+           Coef. Estimate      SE Null value t-stat d.f. (Satt) p-val (Satt)
+ composite_index   0.0615 0.01328          0   4.63        17.4      < 0.001
+    exposure_avg   0.0214 0.00595          0   3.61        17.9      0.00204
+      income_pct  -0.4578 0.08161          0  -5.61        17.4      < 0.001
+ Sig.
+  ***
+   **
+  ***
+Indirect (beta*lambda): 0.00061  | tau: 0.02145  | indirect share of (tau+indirect): 2.8 %
+
+Cluster-bootstrap 95% CI for indirect effect ( 5000 reps, 5000 valid): 1e-05 to 0.0015 
+
+
+=== Country-specific H1 slopes (no country FE, within-country OLS) ===
+# A tibble: 29 × 4
+   c_alphan        b      se     n
+   <chr>       <dbl>   <dbl> <int>
+ 1 AT       -0.0368  0.0165    937
+ 2 AU       -0.0502  0.0189    619
+ 3 BG        0.00959 0.0206    840
+ 4 CH       -0.0153  0.0114   2303
+ 5 CL       -0.00753 0.0221    680
+ 6 CZ        0.0102  0.0161   1098
+ 7 DE        0.0300  0.0179    935
+ 8 DK       -0.00529 0.0258    613
+ 9 FI       -0.0227  0.0193    703
+10 FR        0.0409  0.0156   1139
+11 GB-GBN    0.0327  0.0145   1078
+12 HR        0.0377  0.0206    752
+13 IL        0.0165  0.0160    864
+14 IS       -0.00795 0.0170    938
+15 IT        0.0243  0.0228    542
+16 JP        0.0720  0.0244    518
+17 LT        0.0579  0.0255    544
+18 NO        0.00134 0.0184    905
+19 NZ        0.0250  0.0167    818
+20 PH        0.0366  0.00958  3625
+21 RU        0.00518 0.0123   1317
+22 SE       -0.00386 0.0159   1160
+23 SI        0.0364  0.0177    748
+24 SR        0.0236  0.0260    360
+25 TH        0.0235  0.0231    603
+26 TW        0.0176  0.0131   1202
+27 US        0.0279  0.0130   1398
+28 VE       -0.0315  0.0199    919
+29 ZA       -0.00159 0.0134   1469
+
+
+=== Auxiliary class-channel tests (country-clustered SEs, income tertile is the moderator) ===
+--- Anchor: doctor_pay (N= 28701 ) ---
+Top channel:
+                                   Estimate  Std. Error    t value     Pr(>|t|)
+contact_richer                 -0.001943059 0.004387690 -0.4428432 6.578825e-01
+contact_richer:class_grouphigh  0.011559923 0.007578011  1.5254561 1.271564e-01
+income_pct                      0.296910488 0.047142846  6.2981027 3.056796e-10
+Bottom channel:
+                                   Estimate  Std. Error    t value    Pr(>|t|)
+contact_poorer                 -0.004288917 0.003873099 -1.1073603 0.268147462
+contact_poorer:class_grouphigh  0.003185652 0.004928928  0.6463173 0.518079049
+income_pct                      0.143998378 0.037738562  3.8156827 0.000136092
+--- Anchor: minister_pay (N= 28252 ) ---
+Top channel:
+                                  Estimate  Std. Error   t value  Pr(>|t|)
+contact_richer                 0.002197638 0.008222751 0.2672631 0.7892686
+contact_richer:class_grouphigh 0.005859921 0.011335956 0.5169322 0.6052075
+income_pct                     0.048335803 0.058550987 0.8255335 0.4090757
+Bottom channel:
+                                   Estimate  Std. Error    t value     Pr(>|t|)
+contact_poorer                 -0.004711984 0.004070726 -1.1575293 2.470660e-01
+contact_poorer:class_grouphigh  0.003079808 0.005084326  0.6057455 5.446886e-01
+income_pct                      0.139561051 0.034701055  4.0218100 5.790287e-05
+--- Anchor: chairman_pay (N= 28181 ) ---
+Top channel:
+                                  Estimate  Std. Error   t value    Pr(>|t|)
+contact_richer                 0.006798850 0.008530562 0.7969991 0.425458254
+contact_richer:class_grouphigh 0.007215861 0.009632807 0.7490922 0.453807876
+income_pct                     0.341842160 0.106359585 3.2140231 0.001310367
+Bottom channel:
+                                   Estimate  Std. Error   t value     Pr(>|t|)
+contact_poorer                 -0.004868759 0.004185366 -1.163282 0.2447250872
+contact_poorer:class_grouphigh  0.003376754 0.005256261  0.642425 0.5206025031
+income_pct                      0.149133309 0.040736629  3.660914 0.0002517766
+
+Done.

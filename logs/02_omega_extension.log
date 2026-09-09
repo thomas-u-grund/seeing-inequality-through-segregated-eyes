@@ -1,0 +1,11 @@
+=== Omega extension: perceived ratio at homophily = 5, by omega ===
+# A tibble: 5 × 5
+  homophily ratio_mean ratio_se realized_seg_mean alpha
+      <dbl>      <dbl>    <dbl>             <dbl> <dbl>
+1         5       3.03 0.000511             0.975  0   
+2         5       2.51 0.000642             0.975  0.25
+3         5       2.08 0.000953             0.975  0.5 
+4         5       1.73 0.00119              0.975  0.75
+5         5       1.44 0.00135              0.975  1   
+
+Saved data/alpha_extension.csv (column 'alpha' = paper's omega).
