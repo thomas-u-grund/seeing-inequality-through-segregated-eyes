@@ -32,6 +32,7 @@ session_info.txt   R version and package versions used to produce the
 | `06_example_networks_and_coefplot.R` | Figure 1 (`results/sim_example_networks.png`), Figure 4 (`results/coef_plot_main_results.png`) | nothing (coefficient values are hard-coded from 07's output, since the coefficient plot only visualizes already-estimated numbers) |
 | `07_empirical_main.R` | All Table 1, Table 2, and online supplement Table S1 numbers (printed to console); `data/country_slopes.csv` | `raw/ZA7600_v3-0-0.dta` -- see `raw/README.md` |
 | `08_make_country_slopes_figure.R` | Online supplement Figure S4 (`results/country_slopes.png`) | `data/country_slopes.csv` from 07 |
+| `09_scope_condition_sigma_sweep.R` | Online supplement Figure S5 (`results/scope_condition_sigma_sweep.png`), `data/scope_condition_sigma_sweep.csv` | nothing (self-contained simulation) |
 
 ## How to reproduce
 
@@ -55,7 +56,7 @@ directory must be `replication_pack/` itself when you invoke `Rscript`.
 **A note on exact reproducibility.** `07_empirical_main.R` is single-threaded
 and fully deterministic (fixed seeds throughout, including the cluster
 bootstrap) -- re-running it reproduces every number in Tables 1–2 and S1
-exactly. The simulation scripts (`01`, `04`, `05`) parallelize across cores
+exactly. The simulation scripts (`01`, `04`, `05`, `09`) parallelize across cores
 with `parallel::mclapply`; R's fork-based parallel RNG is not guaranteed
 bit-identical run-to-run or across machines with different core counts, even
 with a fixed seed. Re-running them reproduces the same qualitative pattern
