@@ -15,7 +15,7 @@ base_wage <- c(low = 100, mid = 200, high = 300)
 sigma_log <- 0.15
 
 # Verified to reach target mixing patterns reliably at N=300/~2,250 edges;
-# do not reduce without re-checking convergence (see simulation_final.R).
+# do not reduce without re-checking convergence (see 01_simulation_main.R).
 ergm_control <- control.simulate.formula(MCMC.burnin = 200000, MCMC.interval = 1)
 
 simulate_one <- function(N, homophily, lambda_dist, density = 15 / (N - 1)) {

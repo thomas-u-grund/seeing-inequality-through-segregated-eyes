@@ -18,7 +18,7 @@ sigma_log <- 0.15
 
 # Verified to reach target mixing patterns reliably at N=300 across this
 # degree range (up to ~7,500 edges at degree=50); do not reduce without
-# re-checking convergence (see simulation_final.R header for diagnostics).
+# re-checking convergence (see 01_simulation_main.R header for diagnostics).
 ergm_control <- control.simulate.formula(MCMC.burnin = 400000, MCMC.interval = 1)
 
 simulate_one <- function(N, homophily, density) {

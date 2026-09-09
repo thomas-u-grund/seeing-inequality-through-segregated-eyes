@@ -1,17 +1,17 @@
-# Final empirical analysis for the ESR manuscript -- third revision round.
+# Empirical analysis for "Seeing Inequality Through Segregated Eyes"
 #
-# Changes in this round:
-# 1. Own household income (within-country percentile, continuous) added to
-#    EVERY main model (H1 and both H3 equations), matching the theoretical
-#    attitude equation's self-interest term z_i. Tertile/quintile versions
-#    reported as robustness.
-# 2. CR2 small-sample corrected cluster-robust SEs (clubSandwich) for the
-#    headline H1 and H3 results, given only 29 country clusters.
-# 3. Cluster-bootstrap CI for the indirect effect (beta*lambda) in the path
-#    decomposition, resampling countries.
-# 4. Composite-index validation: inter-item correlations, Cronbach's alpha,
-#    and a complete-cases-only (all 3 anchors) robustness check.
-# 5. Country-specific exposure slopes (H1), for the appendix figure.
+# Every main model (H1 and both H3 equations) includes own household
+# income (within-country percentile, continuous), matching the theoretical
+# attitude equation's self-interest term z_i; tertile/quintile versions are
+# reported as robustness checks. Standard errors are clustered by country,
+# with CR2 small-sample-corrected cluster-robust SEs (clubSandwich) also
+# reported for the headline H1 and H3 results, given only 29 country
+# clusters. The indirect effect (beta*lambda) in the path decomposition
+# gets a cluster-bootstrap confidence interval, resampling countries. The
+# composite perceived-inequality index is validated via inter-item
+# correlations and Cronbach's alpha, with a complete-cases-only (all 3
+# anchors) version reported as a robustness check. Country-specific
+# exposure slopes (H1) are also computed here, for the online supplement.
 
 suppressPackageStartupMessages({
   library(haven); library(dplyr); library(sandwich); library(lmtest)
@@ -176,7 +176,7 @@ for (att_var in c("income_too_large", "gov_should_reduce")) {
 }
 
 # =====================================================================
-# Country-specific exposure slopes (H1), for appendix figure
+# Country-specific exposure slopes (H1), for the online supplement
 # =====================================================================
 cat("\n=== Country-specific H1 slopes (no country FE, within-country OLS) ===\n")
 country_slopes <- d1 %>%
@@ -194,10 +194,10 @@ print(country_slopes, n = 40)
 write.csv(country_slopes, "data/country_slopes.csv", row.names = FALSE)
 
 # =====================================================================
-# Auxiliary class-conditional channel tests (unchanged design, now also
-# with income control for consistency; class_group already conditions on
+# Auxiliary class-conditional channel tests, with income control for
+# consistency with the other models; class_group already conditions on
 # income tertile, so this is closely related but reported separately since
-# it is testing a different question -- the channel-specific asymmetry)
+# it is testing a different question -- the channel-specific asymmetry
 # =====================================================================
 d0 <- d %>%
   mutate(class_group = case_when(income_pct <= 1/3 ~ "low", income_pct >= 2/3 ~ "high", TRUE ~ "mid"),

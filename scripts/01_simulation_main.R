@@ -1,59 +1,51 @@
-# Final simulation for "Seeing Inequality Through Segregated Eyes"
+# Simulation for "Seeing Inequality Through Segregated Eyes"
 #
-# v6: perception is no longer class-conditional at all, following the
-# original (2014) model this project is built on. Earlier versions asked
-# each agent to estimate a specific class's mean from same-class contacts,
-# which required a fallback rule for agents with zero contacts in that
-# class -- an awkward, behaviorally strong assumption (why would someone
-# with no personal contact in a class have literally no outside
-# information about it?). The original model never had this problem
-# because it never asked agents to estimate individual classes: each
-# agent's perception is simply a statistic of the wage composition of
-# their OWN local network, with no class filtering at all. We recover
-# this here, generalized to handle within-class wage heterogeneity
-# (necessary so that a single contact does not reveal a class's wage with
-# certainty, see Section 3.1):
+# Each agent's perception is simply a statistic of the wage composition of
+# their OWN local network, with no class filtering: perception never
+# conditions on a contact's class label, which also means it is always
+# well-defined for any agent with at least a handful of contacts (never
+# zero at the degree levels used below), so there is no missing-information
+# edge case to assume away. This generalizes to within-class wage
+# heterogeneity (necessary so that a single contact does not reveal a
+# class's wage with certainty, see Section 3.1):
 #   - Perceived pay ratio (H1, H3): the ratio of the mean wage among ego's
 #     highest-earning third of contacts to their lowest-earning third,
 #     ranked purely by income -- no class labels involved in the split.
 #   - Perceived population mean (H2): the raw, unfiltered mean wage among
 #     ego's contacts, compared against the true population mean.
-# Both quantities are always well-defined for any agent with at least a
-# handful of contacts (never zero at the degree levels used below), so
-# there is no missing-information edge case to assume away. Ties still
-# depend on class homophily (edges + nodematch("class")) as in v5; an
-# extension layering continuous income-distance homophily on top is
-# reported separately (theta_d_sensitivity.R).
+# Ties depend on class homophily (edges + nodematch("class")); an extension
+# layering continuous income-distance homophily on top is reported
+# separately (05_theta_d_sensitivity.R).
 #
-# MEAN-PRESERVING lognormal wages (retained from v4). log(y) ~ N(log(mu_c), sigma^2) makes
-#    mu_c the *median*, not the mean (E[y] = mu_c * exp(sigma^2/2)). Fixed:
-#    log(y) ~ N(log(mu_c) - sigma^2/2, sigma^2), so E[y_i] = mu_c exactly.
+# Wages are mean-preserving lognormal: log(y) ~ N(log(mu_c), sigma^2) would
+# make mu_c the *median*, not the mean (E[y] = mu_c * exp(sigma^2/2)), so
+# instead log(y) ~ N(log(mu_c) - sigma^2/2, sigma^2), giving E[y_i] = mu_c
+# exactly.
 #
-# 3. CHANCE-CORRECTED realized segregation. Raw same-class tie share has a
-#    baseline that mechanically shifts with class-size composition (e.g.
-#    .333 under equal thirds vs .375 under a 50/25/25 split at pure random
-#    mixing) -- not appropriate for the class-size sweep, where the whole
-#    point is to hold "segregation" fixed while composition varies. Realized
-#    segregation is now Newman's nominal assortativity coefficient (via
-#    igraph), which is 0 at random mixing regardless of class-size
-#    composition and 1 at complete segregation, by construction. Raw
-#    same-class share is still reported alongside it for intuition.
+# Realized segregation is chance-corrected. Raw same-class tie share has a
+# baseline that mechanically shifts with class-size composition (e.g.
+# .333 under equal thirds vs .375 under a 50/25/25 split at pure random
+# mixing) -- not appropriate for the class-size sweep, where the whole
+# point is to hold "segregation" fixed while composition varies. Realized
+# segregation is Newman's nominal assortativity coefficient (via igraph),
+# which is 0 at random mixing regardless of class-size composition and 1
+# at complete segregation, by construction. Raw same-class share is still
+# reported alongside it for intuition.
 #
-# 4. N=300 / degree=15 (not N=3000 / degree=150). ergm's degree-preserving
-#    (CondDegreeDist) MCMC needs a burnin scaling with the number of tied
-#    pairs to actually reach the target mixing pattern; at N=3000/deg=150
-#    (~225,000 edges) the default burnin (and even a 5e6-step explicit one,
-#    ~3 min/simulation) is impractical to run at the replicate counts used
-#    below. N=300/degree=15 (~2,250 edges) converges reliably in ~0.1-0.2s
-#    with an explicit, verified burnin, at the SAME density (~0.05) used
-#    throughout. Degree=15 is anchored to Dunbar's (1993) "sympathy group"
-#    layer (his own estimate of a person's closest ~12-15 relationships)
-#    rather than the broader ~150-tie "stable relationships" layer used in
-#    an earlier version of this script; for the purpose of this model --
-#    inferring others' incomes with some accuracy -- the smaller, closer-tie
-#    layer is arguably the more defensible anchor in any case. A bracketing
-#    robustness check across three of Dunbar's named layers (support clique
-#    ~5, sympathy group ~15, band ~50) is reported in the Appendix.
+# N=300 with expected degree 15. ergm's degree-preserving (CondDegreeDist)
+# MCMC needs a burnin scaling with the number of tied pairs to actually
+# reach the target mixing pattern; at a much larger N the burnin needed to
+# converge becomes impractical to run at the replicate counts used below.
+# N=300/degree=15 (~2,250 edges) converges reliably in ~0.1-0.2s with an
+# explicit, verified burnin, at the same density (~0.05) used throughout.
+# Degree=15 is anchored to Dunbar's (1993) "sympathy group" layer (his own
+# estimate of a person's closest ~12-15 relationships) rather than a much
+# broader circle of ties; for the purpose of this model -- inferring
+# others' incomes with some accuracy -- the smaller, closer-tie layer is
+# arguably the more defensible anchor in any case. A bracketing robustness
+# check across three of Dunbar's named layers (support clique ~5, sympathy
+# group ~15, band ~50) is reported in the online supplement
+# (04_degree_sensitivity.R).
 
 suppressPackageStartupMessages({
   library(statnet); library(network); library(ergm); library(ineq)
